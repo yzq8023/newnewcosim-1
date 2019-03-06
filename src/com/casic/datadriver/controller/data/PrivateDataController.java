@@ -30,6 +30,7 @@ import net.sf.json.util.JSONUtils;
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -48,6 +49,7 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 
 import static com.appleframe.utils.web.Struts2Utils.getResponse;
 import static com.hotent.core.util.AppUtil.getServletContext;
@@ -568,6 +570,64 @@ public class PrivateDataController extends AbstractController {
         response.sendRedirect(preUrl);
     }
 
+
+    @RequestMapping("importBrandSort2")
+    @Action(description = "导入EXCEL文件")
+    public void importBrandSort2(@RequestParam("newFileURL") String newFileURL,
+                                HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ResultMessage message = null;
+        Long taskId = RequestUtil.getLong(request, "id");
+        Long projectId = RequestUtil.getLong(request, "projectId");
+        String preUrl = RequestUtil.getPrePage(request);
+        //File newfile = new File("C:\\Users\\yzq8023\\Desktop\\10000028170042.xls");
+        File newFile = new File(newFileURL);
+        FileInputStream fileInputStream = new FileInputStream(newFile);
+        MultipartFile file = new MockMultipartFile(newFile.getName(), fileInputStream);
+
+        try {
+            String temp = request.getSession().getServletContext()
+                    .getRealPath(File.separator)
+                    + "temp"; // 临时目录
+            File tempFile = new File(temp);
+            if (!tempFile.exists()) {
+                tempFile.mkdirs();
+            }
+            DiskFileUpload fu = new DiskFileUpload();
+            // 设置允许用户上传文件大小,单位:位
+            fu.setSizeMax(10 * 1024 * 1024);
+            // 设置最多只允许在内存中存储的数据,单位:位
+            fu.setSizeThreshold(4096);
+            // 设置一旦文件大小超过getSizeThreshold()的值时数据存放在硬盘的目录
+            fu.setRepositoryPath(temp);
+            // 开始读取上传信息
+            TaskInfo taskinfo = taskInfoService.getTaskById(taskId);
+            if (file == null) {
+                return;
+            }
+
+            logger.info(file.getOriginalFilename());
+            // 获取上传文件名,包括路径
+            String name = file.getOriginalFilename();
+            long size = file.getSize();
+            if ((name == null || name.equals("")) && size == 0) {
+                logger.info("文件不对劲");
+                return;
+            }
+
+            InputStream in = file.getInputStream();
+            int count = privateDataService
+                    .importBrandPeriodSort(in, taskId, projectId, taskinfo.getDdTaskName());
+
+            message = new ResultMessage(ResultMessage.Success, "成功导入" + count + "条");
+        } catch (Exception ex) {
+            // 改为人工刷新缓存KeyContextManager.clearPeriodCacheData(new
+            // PeriodDimensions());// 清理所有缓存
+            message = new ResultMessage(ResultMessage.Fail, "导入失败" + ex.getMessage());
+        }
+
+        addMessage(message, request);
+        response.sendRedirect(preUrl);
+    }
 
     /**
      * 输入数据.

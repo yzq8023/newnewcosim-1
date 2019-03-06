@@ -231,15 +231,18 @@
 
 <div class="container" id="dataList">
     <div class="row">
-        <div class="col-xs-9">
+        <div class="col-xs-8">
             <ol class="breadcrumb">
                 <li><a href="list.ht"><span class="glyphicon glyphicon-book"></span> ${TaskInfo.ddTaskProjectName}</a>
                 </li>
                 <li class="active">${TaskInfo.ddTaskName}</li>
             </ol>
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-4">
             <div class="pull-right">
+                <!-- . %2E   / %2F   \ %5C   -->
+                <a class="btn btn-default" href="${ctx}/datadriver/privatedata/importBrandSort2.ht?id=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}&newFileURL=C%3A%2FUsers%2Fyzq8023%2FDesktop%2F10000028170042%2Exls" id="data_btn"><span
+                        class="glyphicon glyphicon-book"></span> 动力匹配</a>
                 <a class="btn btn-success" href="javascript:void(0)" id="submit_btn"><span
                         class="glyphicon glyphicon-ok"></span> 提交审核</a>
                 <a class="btn btn-default" href="javascript:void(0)" id="knowledge_btn"><span
@@ -338,7 +341,7 @@
                             $('#loading').hide();
                             $('#knowledge_frame').jqxWindow('open');
 
-                        }, 3000);
+                        }, 5000);
                     });
 
                 }

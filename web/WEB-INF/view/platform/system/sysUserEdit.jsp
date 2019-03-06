@@ -656,8 +656,8 @@
                     <tr>
                         <th>密级:</th>
                         <td>
-                           <%-- <select name="psnSecretLevel" class="select" style="width:245px !important"
-                                    disabled="disabled">
+                            <select name="psnSecretLevel" class="select" style="width:245px !important"
+                                    <c:if test="${bySelf==1}">disabled="disabled"</c:if>>
                                 <option value="90"
                                         <c:if test="${sysUser.psnSecretLevel==90}">selected</c:if> >核心
                                 </option>
@@ -670,22 +670,22 @@
                                 <option value="60"
                                         <c:if test="${sysUser.psnSecretLevel==60}">selected</c:if>>非密
                                 </option>
-                            </select>--%>
+                            </select>
 
-                               <c:choose>
-                                   <c:when test="${sysUser.psnSecretLevel==90}">
-                                        <input disabled="disabled"  value="核心" style="width:240px !important">
-                                   </c:when>
-                                   <c:when test="${sysUser.psnSecretLevel==80}">
-                                       <input disabled="disabled"  value="重要" style="width:240px !important">
-                                   </c:when>
-                                   <c:when test="${sysUser.psnSecretLevel==70}">
-                                       <input disabled="disabled"  value="一般" style="width:240px !important">
-                                   </c:when>
-                                   <c:otherwise>
-                                       <input disabled="disabled"  value="非密" style="width:240px !important">
-                                   </c:otherwise>
-                               </c:choose>
+                               <%--<c:choose>--%>
+                                   <%--<c:when test="${sysUser.psnSecretLevel==90}">--%>
+                                        <%--<input disabled="disabled"  value="核心" style="width:240px !important">--%>
+                                   <%--</c:when>--%>
+                                   <%--<c:when test="${sysUser.psnSecretLevel==80}">--%>
+                                       <%--<input disabled="disabled"  value="重要" style="width:240px !important">--%>
+                                   <%--</c:when>--%>
+                                   <%--<c:when test="${sysUser.psnSecretLevel==70}">--%>
+                                       <%--<input disabled="disabled"  value="一般" style="width:240px !important">--%>
+                                   <%--</c:when>--%>
+                                   <%--<c:otherwise>--%>
+                                       <%--<input disabled="disabled"  value="非密" style="width:240px !important">--%>
+                                   <%--</c:otherwise>--%>
+                               <%--</c:choose>--%>
                         </td>
                     </tr>
                     <tr>
@@ -711,7 +711,7 @@
                 <input type="hidden" id="picture" name="picture" value="${sysUser.picture}"/>
                 <%--<input type="hidden" id="isLock" name="isLock" value="${sysUser.isLock}"/>--%>
 
-                <input type="hidden" id="psnSecretLevel" name="psnSecretLevel" value="${sysUser.psnSecretLevel}"/>
+                <%--<input type="hidden" id="psnSecretLevel" name="psnSecretLevel" value="${sysUser.psnSecretLevel}"/>--%>
 
             </div>
             <c:if test="${bySelf!=1}">
